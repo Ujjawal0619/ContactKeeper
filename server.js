@@ -1,7 +1,13 @@
-const c = require('config');
 const express = require('express');
+const connectDB = require('./config/db');
 
 const app = express();
+
+// Connect Database
+connectDB();
+
+// Init Middleware
+app.use(express.json({ extemded: false }));
 
 app.get('/', (req, res) => res.json({msg:"Welcom to the form filler API..."}));
 

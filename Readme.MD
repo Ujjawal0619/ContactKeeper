@@ -10,7 +10,7 @@ npm i express bcryptjs jsonwebtoken config express-validator mongoos
     express : api and routing
     bcryptjs : use to hash the plain text password
     jsonwebtoken : to send back & forth tokens to acces protective routes
-    config : contain global variables
+    config : package proved acces to global variables stored in root/config/default.json
     express-validator : validate the inputs.
     mongoos : abstraction layer allows us read and write data to db and it also allow us to create modals
 
@@ -20,3 +20,5 @@ npm i -D nodemon concurrently
     nodemon : it automatically run surver each time you save any file.
                 insted of npm start or npm run server we can add scripts into package.json ("server": "nodemon server.js") as mention in "main" value.
     concurrently : used to run server and frondend UI at same time.
+
+Express Validator: passend as 2nd argument in router.post(), in form of array [check('name', 'error msg').isEmpty(), ...]
