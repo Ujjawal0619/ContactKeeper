@@ -21,4 +21,24 @@ npm i -D nodemon concurrently
                 insted of npm start or npm run server we can add scripts into package.json ("server": "nodemon server.js") as mention in "main" value.
     concurrently : used to run server and frondend UI at same time.
 
-Express Validator: passend as 2nd argument in router.post(), in form of array [check('name', 'error msg').isEmpty(), ...]
+## Express Validator: passend as 2nd argument in router.post(), in form of array [check('name', 'error msg').isEmpty(), ...]
+
+## JWT (jsonwebtoken): it create a token for client that will help to authorise the user
+
+const jwt = require('jsonwebtoken');
+
+const payload = { user: {id: user.id} }
+jwt.sign(
+payload,
+config.get('jwtSecret'),
+{expiresIn: 3600},
+(err, token) => {
+if (err) throw err;
+res.json({ token });
+}
+);
+
+goto jwt.io, past a token, in payload w'll get user-id, in-time and expire-time.
+
+Middleware : app.use((req, res, next) => {..... next();}) // basically used to check tokens when ever a user login.
+----------- next() moves the control to run further middleware if any, order of middleware matters here.

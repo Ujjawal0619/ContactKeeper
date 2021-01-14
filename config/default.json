@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://ujjwal0619:Ullash72525@formfiller.0ivlj.mongodb.net/FormFiller?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://ujjwal0619:Ullash72525@formfiller.0ivlj.mongodb.net/FormFiller?retryWrites=true&w=majority",
+    "jwtSecret": "secret"
 }
