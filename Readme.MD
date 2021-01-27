@@ -42,3 +42,20 @@ goto jwt.io, past a token, in payload w'll get user-id, in-time and expire-time.
 
 Middleware : app.use((req, res, next) => {..... next();}) // basically used to check tokens when ever a user login.
 ----------- next() moves the control to run further middleware if any, order of middleware matters here.
+
+------------------------------ CLIENT SIDE -----------------------------
+
+commands: npx create-react-app client
+script in package of root of project will be:
+"scripts": {
+"server": "nodemon server.js",
+"start": "node server.js",
+"client": "npm start --prefix client", --> --prefix goto inside client directory and run client side
+"clientinstall": "npm install --prefix client",
+"dev": "concurrently \"npm run server\" \"npm run client\"" --> run server and client at a time
+}
+
+NOW: concurrently will run both server at Port: 5000 and client at Port: 3000
+NOTE: During development inside client package.json we need to add "proxy": "http://localhost:5000" so that we do not need to make manual request from client side.
+PACKAGES:
+npm i axios react-router-dom uuid react-transition-group
