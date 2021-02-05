@@ -1,9 +1,14 @@
 import { useContext, useState } from 'react';
 import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
 
 const Register = () => {
   const alertContext = useContext(AlertContext);
+  const authContext = useContext(AuthContext);
+
   const { setAlert } = alertContext;
+  const { register } = authContext;
+
   const [user, setUser] = useState({
     name: '',
     emain: '',
@@ -24,7 +29,11 @@ const Register = () => {
     } else if (password !== password2) {
       setAlert(' Password do nto match', 'danger');
     } else {
-      console.log('User Registered');
+      register({
+        name,
+        email,
+        password,
+      });
     }
   };
 
@@ -64,6 +73,7 @@ const Register = () => {
           type='submit'
           value='Register'
           className='btn btn-primary btn-block'
+          // disabled={!Object.values(user).every((val) => val !== '')}
         />
       </form>
     </div>
