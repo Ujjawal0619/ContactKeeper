@@ -1,26 +1,49 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import AuthContext from '../../context/auth/authContext';
 
 const Navbar = ({ title, icon }) => {
+  const authContext = useContext(AuthContext);
+
+  const { isAuthenticated, logout, user } = authContext;
+
+  const authLinks = (
+    <>
+      <li> | {user && user.name} | </li>
+      <li>
+        <a href='#!'>
+          <i className='fas fa-sign-out-alt'></i>
+          <span className='hide-sm'> Logout </span>
+        </a>
+      </li>
+    </>
+  );
+
+  const guestLinks = (
+    <>
+      <li>
+        <Link to='/register'>Register</Link>
+      </li>
+      <li>
+        <Link to='/login'>Login</Link>
+      </li>
+    </>
+  );
+
   return (
-    <div className="navbar bg-primary">
+    <div className='navbar bg-primary'>
       <h1>
         <i className={icon} /> {title}
       </h1>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link to='/'>Home</Link>
         </li>
         <li>
-          <Link to="/about">About</Link>
+          <Link to='/about'>About</Link>
         </li>
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
+        {isAuthenticated ? authLinks : guestLinks}
       </ul>
     </div>
   );
@@ -32,8 +55,8 @@ Navbar.propTypes = {
 };
 
 Navbar.defaultProps = {
-  title: "Contact Keeper",
-  icon: "fas fa-id-card-alt",
+  title: 'Contact Keeper',
+  icon: 'fas fa-id-card-alt',
 };
 
 export default Navbar;
