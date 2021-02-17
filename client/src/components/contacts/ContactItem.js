@@ -5,7 +5,8 @@ import ContactContext from '../../context/contact/contactContext';
 const ContactItem = ({ contact }) => {
   const contactContext = useContext(ContactContext);
   const { deleteContact, setCurrent, clearCurrent } = contactContext;
-  const { _id, name, email, phone, type } = contact;
+  const { _id, name, email, phone, type, dob } = contact;
+  const birthDate = new Date(dob);
 
   const onDelete = () => {
     deleteContact(_id);
@@ -34,6 +35,11 @@ const ContactItem = ({ contact }) => {
         {phone && (
           <li>
             <i className='fas fa-phone' /> {phone}
+          </li>
+        )}
+        {dob && (
+          <li>
+            <i class='fas fa-calendar-alt' /> {birthDate.toLocaleDateString()}
           </li>
         )}
       </ul>
