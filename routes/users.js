@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const { check, validationResult } = require("express-validator");
-const jwt = require("jsonwebtoken");
-const config = require("config");
+const bcrypt = require('bcryptjs');
+const { check, validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
-const User = require("../models/User"); // user model
+const User = require('../models/User'); // user model
 // GET: recieve from server, POST: sending to server,
 // PUT: modifying somthing, DELETE: delete somthing
 
@@ -13,13 +13,14 @@ const User = require("../models/User"); // user model
 // @desc    Register a user
 // @access  Public
 router.post(
-  "/", // '/' represent api/users (defined in server.js)
+  '/', // '/' represent api/users (defined in server.js)
   [
-    check("name", "name is required").not().isEmpty(),
-    check("email", "Please include a valid email").isEmail(),
+    check('name', 'name is required').not().isEmpty(),
+    check('phone', 'Please include a valid phone number').not().isEmpty(),
+    check('email', 'Please include a valid email').isEmail(),
     check(
-      "password",
-      "Please enter a passowrd with 6 or moer characters"
+      'password',
+      'Please enter a passowrd with 6 or moer characters'
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
@@ -28,18 +29,20 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, password, phone } = req.body;
 
     try {
       let user = await User.findOne({ email });
-      if (user) {
-        return res.status(400).json({ msg: "user already exist" });
+      let number = await User.findOne({ phone });
+      if (user || number) {
+        return res.status(400).json({ msg: 'user or number already exist' });
       }
 
       user = new User({
         name,
         email,
         password,
+        phone,
       });
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
@@ -52,7 +55,7 @@ router.post(
       };
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        config.get('jwtSecret'),
         {
           expiresIn: 3600,
         },
@@ -63,7 +66,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   }
 );

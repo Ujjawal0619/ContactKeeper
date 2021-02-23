@@ -4,7 +4,7 @@ import AuthContext from '../../context/auth/authContext';
 
 const Login = (props) => {
   const [user, setUser] = useState({
-    emain: '',
+    email: '',
     password: '',
   });
 
@@ -17,6 +17,7 @@ const Login = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      // This will redirect to dashboard
       props.history.push('/');
     }
 

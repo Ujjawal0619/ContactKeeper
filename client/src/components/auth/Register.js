@@ -22,12 +22,13 @@ const Register = (props) => {
 
   const [user, setUser] = useState({
     name: '',
-    emain: '',
+    email: '',
+    phone: '',
     password: '',
     password2: '',
   });
 
-  const { name, email, password, password2 } = user;
+  const { name, email, phone, password, password2 } = user;
 
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -43,6 +44,7 @@ const Register = (props) => {
       register({
         name,
         email,
+        phone,
         password,
       });
     }
@@ -79,6 +81,10 @@ const Register = (props) => {
             value={password2}
             onChange={onChange}
           />
+        </div>
+        <div className='form-group'>
+          <label htmlFor='phone'>Phone Number</label>
+          <input type='text' name='phone' value={phone} onChange={onChange} />
         </div>
         <input
           type='submit'
