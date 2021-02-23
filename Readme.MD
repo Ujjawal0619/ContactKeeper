@@ -1,3 +1,5 @@
+NOTE: REMOVE YOUR EMAIL
+
 commands:
 
 npm init -y
