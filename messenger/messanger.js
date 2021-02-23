@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: 'ujjawal.kumar0619@gmail.com',
-  to: 'ujjawal.kumar0619@gmail.com',
+  to: null,
   subject: 'Birth Day Reminder',
   text: null,
 };
@@ -37,8 +37,8 @@ module.exports = async () => {
         let person = await User.findById(user.user);
         if (person) {
           // Start sending mail to person
-          console.log(`sending mail for ${user.name}`);
           mailOptions.text = `Today's ${user.name} Birthday.`;
+          mailOptions.to = person.mail;
 
           transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
