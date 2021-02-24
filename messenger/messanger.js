@@ -1,6 +1,5 @@
 const Contact = require('../models/Contact');
 const User = require('../models/User');
-const Vonage = require('@vonage/server-sdk');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
@@ -10,7 +9,7 @@ const transporter = nodemailer.createTransport({
   requireTLS: true,
   auth: {
     user: 'ujjawal.kumar0619@gmail.com',
-    pass: '************',
+    pass: 'Ullash@72525',
   },
 });
 
@@ -38,8 +37,8 @@ module.exports = async () => {
         if (person) {
           // Start sending mail to person
           mailOptions.text = `Today's ${user.name} Birthday.`;
-          mailOptions.to = person.mail;
-
+          mailOptions.to = person.email;
+          console.log(`user: ${person.name} to:${person.email}`);
           transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
               console.log(err);

@@ -1,4 +1,4 @@
-NOTE: REMOVE YOUR EMAIL
+NOTE: https://myaccount.google.com/lesssecureapps should be turned on if you are using your own account. (use it only for testing)
 
 commands:
 
@@ -6,7 +6,7 @@ npm init -y
 
     --> initialize package.json, "scripts" & "main" keys value changed to (under "scripts" we have "start": "node server.js", "server":"nodemon server.js") and ("main": "server.js") etc, you can add discription also.
 
-npm i express bcryptjs jsonwebtoken config express-validator mongoos
+npm i express bcryptjs jsonwebtoken config express-validator mongoos node-schedule nodemailer
 
     --> install requred packages as regualr dependencies.
     express : api and routing
@@ -15,6 +15,8 @@ npm i express bcryptjs jsonwebtoken config express-validator mongoos
     config : package proved acces to global variables stored in root/config/default.json
     express-validator : validate the inputs.
     mongoos : abstraction layer allows us read and write data to db and it also allow us to create modals
+    node-schdeule: allows to implement trigger on some particular time.
+    nodemailer: allows to send mails.
 
 npm i -D nodemon concurrently
 
@@ -61,3 +63,30 @@ NOW: concurrently will run both server at Port: 5000 and client at Port: 3000
 NOTE: During development inside client package.json we need to add "proxy": "http://localhost:5000" so that we do not need to make manual request from client side.
 PACKAGES:
 npm i axios react-router-dom uuid react-transition-group
+
+DEPLOYMENT:
+
+    I'm using heroku here. The steps i follow:
+    1. install heroku cli to your local machine.
+    2. update cridentials inside your app (email, passwords, secreat keys, URI, etc).
+    3. remove initial route. (app.use('/' ...))
+    4. if you have config files(default.json) use a new one and called it production.json for production. (default.json won't work in production)
+    5. inside your entry point (app.js or server.js) add.
+        // Serve static(react) assets in production
+        if(process.env.NODE_ENV === 'porduction') {
+        // Set static folder
+        app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')));
+        }
+    6. we can build react in client folder on each time before deploye, But it can be done on server also, using 'postbuild' script. so in package.json in root add following in scripts:
+        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+
+    NPM_CONFIG_PRODUCTION = flase // make environment out of production. then
+    npm run build make it ture with new changes if any.
+
+    7. check: 'heroku --version' (to verify)
+        command: 'heroku login' (to login)
+        command: 'heroku create' (to create app for our application)
+        update your git repo.
+        add your (remote) git-repo to created app on heroku.
+            goto app -> deploy -> copy git command and run.
+
