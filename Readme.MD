@@ -89,4 +89,4 @@ DEPLOYMENT:
         update your git repo.
         add your (remote) git-repo to created app on heroku.
             goto app -> deploy -> copy git command and run.
-
+        now push your branch: 'git push heroku <branch name>'
