@@ -24,7 +24,7 @@ const ContactState = (props) => {
     error: null,
   };
 
-  const [state, dispatch] = useReducer(contactReducer, initialState); // contactReducer used here
+  const [state, dispatch] = useReducer(contactReducer, initialState); // contactReducer used here to access state
 
   // Get Contacts
   const getContacts = async (contact) => {

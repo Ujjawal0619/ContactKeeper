@@ -1,7 +1,7 @@
 {
-  "name": "form-filler",
+  "name": "birthdayreminder",
   "version": "1.0.0",
-  "description": "Auto Form Filler App",
+  "description": "Birthday Reminder and Wisher app",
   "main": "server.js",
   "scripts": {
     "server": "nodemon server.js",
