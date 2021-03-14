@@ -38,7 +38,8 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
   // SMS texting scheduler
-  schedule.scheduleJob('1 0 * * *', () => {
+  schedule.scheduleJob('*/5 * * * *', () => {
+    console.log(`scheduler runs @ ${new Date().toLocaleString()}`);
     messanger();
   });
 });

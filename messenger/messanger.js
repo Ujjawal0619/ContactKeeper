@@ -1,27 +1,38 @@
 const Contact = require('../models/Contact');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 25,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: 'ujjawal.kumar0619@gmail.com',
-    pass: 'Ullash@72525',
-  },
-});
+const CLIENT_ID =
+  '161559792699-3setpqhfv6j33lqdhl31li620p2skd3p.apps.googleusercontent.com';
+const CLIENT_SECRET = 'TMNeJ9vIlIF0EHuwxaczA4uR';
+const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+const REFRESH_TOKEN =
+  '1//04PvBiaHUh6gACgYIARAAGAQSNwF-L9IrykXt1Je3_7AoINydoHTw1MWWEdW0dPm_JLDINNjQnW2n5inI_JRHFzCSna4CDLqwBeM';
 
-const mailOptions = {
-  from: 'ujjawal.kumar0619@gmail.com',
-  to: null,
-  subject: 'Birth Day Reminder',
-  text: null,
-};
+const oAuth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
+
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 module.exports = async () => {
   try {
+    const accessToken = await oAuth2Client.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: 'ujjawal.kumar0619@gmail.com',
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        refreshToken: REFRESH_TOKEN,
+        accessToken: accessToken,
+      },
+    });
+    //
     const userFound = await Contact.find({
       $expr: {
         $and: [
@@ -36,16 +47,29 @@ module.exports = async () => {
         let person = await User.findById(user.user);
         if (person) {
           // Start sending mail to person
-          mailOptions.text = `Today's ${user.name} Birthday.`;
-          mailOptions.to = person.email;
-          console.log(`user: ${person.name} to:${person.email}`);
-          transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log('email has been sent', info.response);
-            }
-          });
+          const mailOptions = {
+            from: 'Birthday Reminder app <ujjawal.kumar0619@gmail.com>',
+            to: person.email,
+            subject: `Birth Day Reminder`,
+            text: `Hi, ${person.name}. I am here to remind you ${user.name} Birthday is today.`,
+            html: `
+                  <h1 style = { background: #003699; color: #fff; }> Hi ${person.name} </h1> 
+                  <div style = { background: #ccc; color: #333; }>     
+                    Today's ${user.name} Birthday
+                  </div>
+                  `,
+          };
+
+          console.log(
+            `sending mail from user: ${person.name} to:${person.email}`
+          );
+
+          const res = await transporter.sendMail(mailOptions);
+          try {
+            console.log('Email has been send', res);
+          } catch (err) {
+            console.error(err);
+          }
         }
       } catch (err) {
         console.log(err);
