@@ -90,3 +90,18 @@ DEPLOYMENT:
         add your (remote) git-repo to created app on heroku.
             goto app -> deploy -> copy git command and run.
         now push your branch: 'git push heroku <branch name>'
+
+    8. for Logs:
+        command: 'heroku logs -a <app_name> --tail'
+
+    9. NOTE: If you are using free hosting account, Your should know about idealing,
+        heroku make sleeps free hosted app if there is no activity in an hour.
+        So, if it someone ping your app, first time it will take about 20 sec to load (wake up the app). Then after it works normally.
+
+FOR E-MAILING:
+
+    1. I used simple nodemailer library to send reminder mail to registered user
+        using gmail less secure app (need to enable manually in google account). But it will not work in production.
+
+    2. To implement mail sending mechanism I use OAuth2 with googleapis package.
+        To use OAuth2 we need to make api and all required credential on outh2playground and on https://console.cloud.google.com/apis. Add your application here and then use googleapis for sending the mail from your gmail id.

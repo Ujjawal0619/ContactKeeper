@@ -32,7 +32,7 @@ module.exports = async () => {
         accessToken: accessToken,
       },
     });
-    //
+
     const userFound = await Contact.find({
       $expr: {
         $and: [
@@ -41,10 +41,11 @@ module.exports = async () => {
         ],
       },
     });
-    // console.log(userFound[0].user);
+    // console.log(userFound);
     userFound.map(async (user, index) => {
       try {
         let person = await User.findById(user.user);
+        // console.log(person);
         if (person) {
           // Start sending mail to person
           const mailOptions = {
@@ -60,16 +61,11 @@ module.exports = async () => {
                   `,
           };
 
-          console.log(
-            `sending mail from user: ${person.name} to:${person.email}`
-          );
-
           const res = await transporter.sendMail(mailOptions);
-          try {
-            console.log('Email has been send', res);
-          } catch (err) {
-            console.error(err);
-          }
+          console.log(
+            `Email has beed send, 'B-day: ${user.name}'.`,
+            res.envelope
+          );
         }
       } catch (err) {
         console.log(err);
