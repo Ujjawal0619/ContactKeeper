@@ -33,11 +33,21 @@ module.exports = async () => {
       },
     });
 
+    /*
+      Problem: at 00:00:00 query check the previous date.
+      temp sol: I increase the date by 1 day.
+        currDate = new Date();
+        currDate.setDate(currDate.getDate() + 1); // tomrrow
+    
+    */
+    const yesterdayDate = new Date(
+      new Date().setDate(new Date().getDate() + 1)
+    );
     const userFound = await Contact.find({
       $expr: {
         $and: [
-          { $eq: [{ $dayOfMonth: '$dob' }, { $dayOfMonth: new Date() }] },
-          { $eq: [{ $month: '$dob' }, { $month: new Date() }] },
+          { $eq: [{ $dayOfMonth: '$dob' }, { $dayOfMonth: yesterdayDate }] },
+          { $eq: [{ $month: '$dob' }, { $month: yesterdayDate }] },
         ],
       },
     });
@@ -47,20 +57,20 @@ module.exports = async () => {
         let person = await User.findById(user.user);
         // console.log(person);
         if (person) {
-          // Start sending mail to person
           const mailOptions = {
             from: 'Birthday Reminder app <ujjawal.kumar0619@gmail.com>',
             to: person.email,
             subject: `Birth Day Reminder`,
             text: `Hi, ${person.name}. I am here to remind you ${user.name} Birthday is today.`,
             html: `
-                  <h1 style = { background: #003699; color: #fff; }> Hi ${person.name} </h1> 
-                  <div style = { background: #ccc; color: #333; }>     
-                    Today's ${user.name} Birthday
-                  </div>
-                  `,
+            <h1 style = { background: #003699; color: #fff; }> Hi ${person.name} </h1> 
+            <div style = { background: #ccc; color: #333; }>     
+            Today's ${user.name} Birthday
+            </div>
+            `,
           };
 
+          // Start sending mail to person
           const res = await transporter.sendMail(mailOptions);
           console.log(
             `Email has beed send, 'B-day: ${user.name}'.`,
