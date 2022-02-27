@@ -1,4 +1,0 @@
-{
-    "mongoURI": "mongodb+srv://BirthdayReminder:12345@birthdayreminder.j3xpi.mongodb.net/BirthdayReminder?retryWrites=true&w=majority",
-    "jwtSecret": "secret"
-}
